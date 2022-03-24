@@ -11963,7 +11963,6 @@ dependencies = [
  "downcast-rs",
  "errno",
  "libc",
- "libm",
  "memory_units",
  "num-rational 0.2.4",
  "num-traits",
