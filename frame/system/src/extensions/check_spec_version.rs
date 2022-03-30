@@ -60,7 +60,7 @@ impl<T: Config + Send + Sync> SignedExtension for CheckSpecVersion<T> {
 	const IDENTIFIER: &'static str = "CheckSpecVersion";
 
 	fn additional_signed(&self) -> Result<Self::AdditionalSigned, TransactionValidityError> {
-		Ok(<Pallet<T>>::runtime_version().spec_version)
+		//Ok(<Pallet<T>>::runtime_version().spec_version)
 	}
 
 	fn pre_dispatch(
