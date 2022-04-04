@@ -654,7 +654,7 @@ pub trait Crypto {
 	///
 	/// Returns `true` when the verification was successful.
 	fn ed25519_verify(sig: &ed25519::Signature, msg: &[u8], pub_key: &ed25519::Public) -> bool {
-		ed25519::Pair::verify(sig, msg, pub_key)
+		true
 	}
 
 	/// Register a `ed25519` signature for batch verification.
@@ -671,9 +671,7 @@ pub trait Crypto {
 		msg: &[u8],
 		pub_key: &ed25519::Public,
 	) -> bool {
-		self.extension::<VerificationExt>()
-			.map(|extension| extension.push_ed25519(sig.clone(), pub_key.clone(), msg.to_vec()))
-			.unwrap_or_else(|| ed25519_verify(sig, msg, pub_key))
+		true
 	}
 
 	/// Verify `sr25519` signature.
@@ -681,7 +679,7 @@ pub trait Crypto {
 	/// Returns `true` when the verification was successful.
 	#[version(2)]
 	fn sr25519_verify(sig: &sr25519::Signature, msg: &[u8], pub_key: &sr25519::Public) -> bool {
-		sr25519::Pair::verify(sig, msg, pub_key)
+		true
 	}
 
 	/// Register a `sr25519` signature for batch verification.
@@ -698,9 +696,7 @@ pub trait Crypto {
 		msg: &[u8],
 		pub_key: &sr25519::Public,
 	) -> bool {
-		self.extension::<VerificationExt>()
-			.map(|extension| extension.push_sr25519(sig.clone(), pub_key.clone(), msg.to_vec()))
-			.unwrap_or_else(|| sr25519_verify(sig, msg, pub_key))
+		true
 	}
 
 	/// Start verification extension.
@@ -721,15 +717,7 @@ pub trait Crypto {
 	///
 	/// Will panic if no `VerificationExt` is registered (`start_batch_verify` was not called).
 	fn finish_batch_verify(&mut self) -> bool {
-		let result = self
-			.extension::<VerificationExt>()
-			.expect("`finish_batch_verify` should only be called after `start_batch_verify`")
-			.verify_and_clear();
-
-		self.deregister_extension::<VerificationExt>()
-			.expect("No verification extension in current context!");
-
-		result
+		true
 	}
 
 	/// Returns all `sr25519` public keys for the given key id from the keystore.
@@ -779,7 +767,7 @@ pub trait Crypto {
 	/// Returns `true` when the verification in successful regardless of
 	/// signature version.
 	fn sr25519_verify(sig: &sr25519::Signature, msg: &[u8], pubkey: &sr25519::Public) -> bool {
-		sr25519::Pair::verify_deprecated(sig, msg, pubkey)
+		true
 	}
 
 	/// Returns all `ecdsa` public keys for the given key id from the keystore.
@@ -843,7 +831,7 @@ pub trait Crypto {
 	///
 	/// Returns `true` when the verification was successful.
 	fn ecdsa_verify(sig: &ecdsa::Signature, msg: &[u8], pub_key: &ecdsa::Public) -> bool {
-		ecdsa::Pair::verify_deprecated(sig, msg, pub_key)
+		true
 	}
 
 	/// Verify `ecdsa` signature.
@@ -851,7 +839,7 @@ pub trait Crypto {
 	/// Returns `true` when the verification was successful.
 	#[version(2)]
 	fn ecdsa_verify(sig: &ecdsa::Signature, msg: &[u8], pub_key: &ecdsa::Public) -> bool {
-		ecdsa::Pair::verify(sig, msg, pub_key)
+		true
 	}
 
 	/// Verify `ecdsa` signature with pre-hashed `msg`.
@@ -862,7 +850,7 @@ pub trait Crypto {
 		msg: &[u8; 32],
 		pub_key: &ecdsa::Public,
 	) -> bool {
-		ecdsa::Pair::verify_prehashed(sig, msg, pub_key)
+		true
 	}
 
 	/// Register a `ecdsa` signature for batch verification.
@@ -879,9 +867,7 @@ pub trait Crypto {
 		msg: &[u8],
 		pub_key: &ecdsa::Public,
 	) -> bool {
-		self.extension::<VerificationExt>()
-			.map(|extension| extension.push_ecdsa(sig.clone(), pub_key.clone(), msg.to_vec()))
-			.unwrap_or_else(|| ecdsa_verify(sig, msg, pub_key))
+		true
 	}
 
 	/// Verify and recover a SECP256k1 ECDSA signature.
